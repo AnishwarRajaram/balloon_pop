@@ -1,7 +1,8 @@
 """
 GameEngine: owns all balloons, spawns new ones, and handles clicks.
 
-version 1: three types of balloons with negative and positive effects
+version 3: Includes multi-type balloon spawning (Normal, Bonus, Penalty), click hit detection,
+lives/miss system, countdown timer, and game reset handling.
 """
 
 import random
