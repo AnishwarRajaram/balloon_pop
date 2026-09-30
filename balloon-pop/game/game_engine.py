@@ -1,9 +1,7 @@
 """
 GameEngine: owns all balloons, spawns new ones, and handles clicks.
 
-Starter version: one balloon type (random size, fixed points), no
-lives system yet, no timer yet. Click detection also has a known bug
-(see game/click_detection.py) that Task 1 asks you to fix.
+version 1: three types of balloons with negative and positive effects
 """
 
 import random
@@ -13,7 +11,13 @@ from game.click_detection import check_pop
 from game.renderer import WIDTH, HEIGHT
 
 SPAWN_INTERVAL_FRAMES = 45
-POINTS_PER_POP = 10
+
+# Defining Balloon Types: (Color RGB, Points)
+BALLOON_TYPES = [
+    {"color": (255, 182, 193), "points": 10},   # Pink (Normal)
+    {"color": (255, 223, 0),   "points": 50},   # Yellow (Bonus)
+    {"color": (220, 20, 60),   "points": -100},   # Red (Penalty)
+]
 
 
 class GameEngine:
@@ -26,13 +30,30 @@ class GameEngine:
         radius = random.randint(16, 44)
         x = random.randint(radius + 10, WIDTH - radius - 10)
         speed = random.uniform(1.5, 3.0)
-        self.balloons.append(Balloon(x=x, y=-radius, radius=radius, speed=speed))
+        
+        # Randomly select a balloon type (e.g. 70% Normal, 15% Bonus, 15% Penalty)
+        type_choice = random.choices(
+            BALLOON_TYPES, 
+            weights=[0.70, 0.15, 0.15], 
+            k=1
+        )[0]
+
+        self.balloons.append(
+            Balloon(
+                x=x,
+                y=-radius,
+                radius=radius,
+                speed=speed,
+                points=type_choice["points"],
+                color=type_choice["color"],
+            )
+        )
 
     def handle_click(self, pos):
         popped = check_pop(self.balloons, pos)
         if popped is not None:
             self.balloons.remove(popped)
-            self.score += POINTS_PER_POP
+            self.score += popped.points  # Dynamically adjusts score based on balloon type
 
     def update(self):
         self.frames_until_spawn -= 1

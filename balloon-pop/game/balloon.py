@@ -8,11 +8,12 @@ import pygame
 
 
 class Balloon:
-    def __init__(self, x, y, radius, speed, color=(220, 90, 120)):
+    def __init__(self, x, y, radius, speed, points=10, color=(255, 182, 193)):
         self.x = x
         self.y = y
         self.radius = radius
         self.speed = speed
+        self.points = points
         self.color = color
 
     def update(self):
