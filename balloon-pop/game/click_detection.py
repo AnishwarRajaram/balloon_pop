@@ -12,6 +12,6 @@ def check_pop(balloons, click_pos):
         dx = click_pos[0] - balloon.x
         dy = click_pos[1] - balloon.y
         distance_squared = dx * dx + dy * dy
-        if distance_squared <= balloon.radius:
+        if distance_squared <= balloon.radius ** 2:
             return balloon
     return None
